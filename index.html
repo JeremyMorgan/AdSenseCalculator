@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="utf-8">
+    <title>Angular Demo</title>
+</head>
+<body ng-controller="TextController">
+    <h2>{{someText}}</h2>
+    
+    <form ng-controller="StartupController">
+    
+        Today (Actual): <input ng-change="computeDaily()" ng-model="funding.dailycount"><br />
+        <br />
+        This Month: <input ng-change="computeMonthly()" ng-model="funding.monthcount"><br />
+        <br />
+        <br />
+        <b>Based on Today:</b><br />
+        Predicted Payment: {{funding.dailyaftertax | currency:"USD $ "}} <br />
+        <br />
+        <b>Based on Month:</b><br />
+        Predicted Payment: {{funding.monthlyaftertax | currency:"USD $ "}}<br />
+    </form>
+</body>
+    <script src="angular.min.js"></script>
+    <script>
+        
+    function StartupController($scope){
+    
+        var date = new Date().getDate();
+        
+        $scope.funding = { dailycount: 0, monthcount: 0, dailyaftertax: 0, monthlyaftertax: 0 };
+        
+        var computeDaily = function() {
+           $scope.funding.dailyaftertax = (($scope.funding.dailycount * 28) / 1.33);
+        };
+        var computeMonthly = function() {
+            $scope.funding.monthlyaftertax = ((28 * $scope.funding.monthcount / date) / 1.33);
+        };
+        
+        $scope.$watch('funding.dailycount', computeDaily);
+        $scope.$watch('funding.monthcount', computeMonthly);        
+    }
+        
+    function TextController($scope){
+       $scope.someText = "Angular Adsense Calculator";
+    }
+    
+    </script>
+    
+    
+</html>
